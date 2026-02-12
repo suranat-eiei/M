@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Love Story - รวบรวมความทรงจำและจดหมายรัก">
+    <title>💖 Love Story</title>
+    <!-- ใช้ Tailwind CSS สำหรับการตกแต่งที่ทันสมัย -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Prompt', sans-serif;
+            background: linear-gradient(135deg, #ffe6f0 0%, #ffcce0 100%);
+            min-height: 100vh;
+        }
+
+        .heart-pulse {
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        #game-area {
+            touch-action: none; /* ป้องกันการเลื่อนหน้าจอบนอุปกรณ์พกพาขณะเล่นเกม */
+        }
+
+        /* เอฟเฟกต์ Fade สำหรับการเปลี่ยนข้อความ */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+
+<body class="p-6 text-gray-800">
+
+    <header class="max-w-5xl mx-auto text-center mb-10 mt-4">
+        <h1 class="text-4xl md:text-5xl font-semibold text-pink-600 mb-2 heart-pulse inline-block">💖 Love Story</h1>
+        <p class="text-pink-500 text-lg">รวบรวมความรู้สึกดีๆ ไว้ในที่เดียว</p>
+    </header>
+
+    <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Section 1: จดหมายรัก -->
+        <section class="bg-white rounded-3xl p-6 shadow-xl shadow-pink-200/50 flex flex-col justify-between border border-pink-100 transform transition hover:-translate-y-1">
+            <header>
+                <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center text-2xl mb-4 mx-auto" aria-hidden="true">💌</div>
+                <h2 class="text-xl font-medium text-center mb-4 text-pink-600">สุ่มจดหมายรัก</h2>
+                <p id="letter" class="text-center text-gray-600 min-h-[80px] flex items-center justify-center italic">
+                    " รักบี้นะ ถึงบางที่ทำตัวไม่ดี🤭 "
+                </p>
+            </header>
+            <button onclick="newLetter()" class="mt-6 w-full bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 px-6 rounded-full transition-all shadow-md shadow-pink-300 active:scale-95">
+                เปิดจดหมายฉบับใหม่
+            </button>
+        </section>
+
+        <!-- Section 2: เพลงของเรา -->
+        <section class="bg-white rounded-3xl p-6 shadow-xl shadow-pink-200/50 flex flex-col justify-between border border-pink-100 transform transition hover:-translate-y-1">
+            <header>
+                <div class="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center text-2xl mb-4 mx-auto" aria-hidden="true">🎵</div>
+                <h2 class="text-xl font-medium text-center mb-4 text-pink-600">เพลงของเรา</h2>
+                <article id="music" class="text-center min-h-[80px] flex flex-col items-center justify-center">
+                    <span class="text-pink-500 text-xl font-medium mb-1">🎶 รอยยิ้ม</span>
+                    <span class="text-gray-500 font-medium">Scrubb</span>
+                </article>
+            </header>
+            <a href="https://www.youtube.com/results?search_query=รอยยิ้ม+scrubb" target="_blank" rel="noopener noreferrer" class="mt-6 w-full block text-center bg-purple-500 hover:bg-purple-600 text-white font-medium py-3 px-6 rounded-full transition-all shadow-md shadow-purple-300 active:scale-95">
+                ฟังเพลงด้วยกัน
+            </a>
+        </section>
+
+        <!-- Section 3: เกมจับหัวใจ -->
+        <section class="bg-white rounded-3xl p-6 shadow-xl shadow-pink-200/50 flex flex-col border border-pink-100 transform transition hover:-translate-y-1">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-medium text-pink-600 flex items-center gap-2">🎯 มินิเกมจับหัวใจ</h2>
+                <div class="text-sm font-medium bg-pink-50 text-pink-600 py-1 px-3 rounded-full">
+                    เวลา: <span id="timer">15</span> วิ
+                </div>
+            </div>
+            
+            <p class="text-center text-gray-600 mb-2 font-medium">คะแนนของคุณ: <span id="score" class="text-2xl text-pink-500">0</span></p>
+            <p id="game-message" class="text-center text-sm text-green-500 h-5 mb-2"></p>
+
+            <div id="game-area" class="relative w-full h-48 bg-pink-50 rounded-2xl border-2 border-dashed border-pink-200 overflow-hidden mb-4">
+                <div id="heart" onclick="catchHeart()" class="hidden absolute text-4xl cursor-pointer select-none drop-shadow-md transition-transform active:scale-75" style="width: 40px; height: 40px; line-height: 40px; text-align: center;" role="button" aria-label="Catch the heart">❤️</div>
+                <div id="game-placeholder" class="absolute inset-0 flex items-center justify-center text-gray-400 text-sm">
+                    กดปุ่ม "เริ่มเกม" ด้านล่าง
+                </div>
+            </div>
+
+            <button id="start-btn" onclick="startGame()" class="mt-auto w-full bg-rose-500 hover:bg-rose-600 text-white font-medium py-3 px-6 rounded-full transition-all shadow-md shadow-rose-300 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed">
+                เริ่มเกม
+            </button>
+        </section>
+
+        <!-- Section 4: รูปของเรา -->
+        <section class="bg-white rounded-3xl p-6 shadow-xl shadow-pink-200/50 flex flex-col border border-pink-100 transform transition hover:-translate-y-1">
+            <h2 class="text-xl font-medium text-center mb-4 text-pink-600 flex items-center justify-center gap-2">📸 รูปของเรา</h2>
+            <div id="drop-zone" class="relative w-full h-64 bg-gray-900 rounded-2xl border-2 border-dashed border-pink-200 overflow-hidden flex items-center justify-center cursor-pointer hover:opacity-90 transition mb-4" onclick="document.getElementById('photo-upload').click()">
+                <!-- เปลี่ยน object-cover เป็น object-contain เพื่อให้เห็นรูปทั้งหมดโดยไม่ถูกตัดขอบ -->
+                <img id="photo-preview" src="https://lh3.googleusercontent.com/u/0/d/17NriewiaC_UVUpz9aeTt9RwbHQvPRL_8=w1000" class="w-full h-full object-contain absolute inset-0 z-10" alt="Our Photo Preview">
+                <div id="photo-placeholder" class="hidden text-pink-400 flex flex-col items-center z-0">
+                    <span class="text-4xl mb-2" aria-hidden="true">➕</span>
+                    <span class="text-sm font-medium mt-2 text-white">กดหรือลากรูปมาวาง</span>
+                </div>
+            </div>
+            <input type="file" id="photo-upload" accept="image/*" class="hidden" onchange="previewPhoto(event)">
+            <footer class="text-center text-gray-500 text-sm mt-auto">
+                เพิ่มรูปภาพความทรงจำดีๆ ของเรา 💖
+            </footer>
+        </section>
+
+    </main>
+
+    <script>
+        // จดหมายรัก
+        const letters = [
+            "รักบี้นะ ถึงบางที่ทำตัวไม่ดี🤭",
+            "ทำตัวดีๆล่ะ🫣",
+            "มีกันในทุกๆวันคั้บ🥰"
+        ];
+
+        function newLetter(){
+            const letterEl = document.getElementById("letter");
+            letterEl.classList.remove("fade-in");
+            // Trigger reflow to restart animation
+            void letterEl.offsetWidth; 
+            letterEl.classList.add("fade-in");
+            
+            const randomLetter = letters[Math.floor(Math.random() * letters.length)];
+            letterEl.innerText = '" ' + randomLetter + ' "';
+        }
+
+        // มินิเกมจับหัวใจ
+        let score = 0;
+        let timeLeft = 15;
+        let gameInterval;
+        let timerInterval;
+        let isPlaying = false;
+
+        function startGame(){
+            if(isPlaying) return;
+            
+            isPlaying = true;
+            score = 0;
+            timeLeft = 15;
+            document.getElementById("score").innerText = score;
+            document.getElementById("timer").innerText = timeLeft;
+            document.getElementById("game-message").innerText = "รีบจับหัวใจ!";
+            
+            const heart = document.getElementById("heart");
+            const startBtn = document.getElementById("start-btn");
+            const placeholder = document.getElementById("game-placeholder");
+            
+            heart.classList.remove("hidden");
+            placeholder.classList.add("hidden");
+            startBtn.disabled = true;
+            startBtn.innerText = "กำลังเล่น...";
+
+            moveHeart();
+            gameInterval = setInterval(moveHeart, 800);
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById("timer").innerText = timeLeft;
+                if(timeLeft <= 0) endGame();
+            }, 1000);
+        }
+
+        function moveHeart(){
+            const heart = document.getElementById("heart");
+            const gameArea = document.getElementById("game-area");
+            
+            const maxX = gameArea.clientWidth - 40; 
+            const maxY = gameArea.clientHeight - 40;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            heart.style.left = randomX + "px";
+            heart.style.top = randomY + "px";
+        }
+
+        function catchHeart(){
+            if(!isPlaying) return;
+            score++;
+            document.getElementById("score").innerText = score;
+            moveHeart();
+            clearInterval(gameInterval);
+            gameInterval = setInterval(moveHeart, 800);
+        }
+
+        function endGame(){
+            isPlaying = false;
+            clearInterval(timerInterval);
+            clearInterval(gameInterval);
+            
+            document.getElementById("heart").classList.add("hidden");
+            document.getElementById("game-placeholder").classList.remove("hidden");
+            
+            const startBtn = document.getElementById("start-btn");
+            startBtn.disabled = false;
+            startBtn.innerText = "เล่นอีกครั้ง";
+            
+            const msg = document.getElementById("game-message");
+            msg.innerText = `เก่งมาก! ได้ไป ${score} คะแนน 💖`;
+        }
+
+        // ระบบพรีวิวรูปภาพ
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const preview = document.getElementById("photo-preview");
+                    const placeholder = document.getElementById("photo-placeholder");
+                    preview.src = e.target.result;
+                    preview.classList.remove("hidden");
+                    placeholder.classList.add("hidden");
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
