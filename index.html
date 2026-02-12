@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Love Story</title>
+<style>
+body {
+  font-family: sans-serif;
+  background: #fff1f5;
+  text-align: center;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+button {
+  background: hotpink;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+#heart {
+  font-size: 40px;
+  position: absolute;
+  cursor: pointer;
+}
+
+.hidden { display:none; }
+</style>
+</head>
+
+<body>
+
+<h1>💖 Love Story</h1>
+
+<div class="card">
+  <h3>จดหมายรัก</h3>
+  <p id="letter">
+    ขอบคุณที่เข้ามาเป็นเรื่องราวที่สวยงามที่สุดในชีวิต ❤️
+  </p>
+  <button onclick="newLetter()">สุ่มจดหมาย</button>
+</div>
+
+<div class="card">
+  <h3>แนะนำเพลงรัก</h3>
+  <p id="music"></p>
+  <button onclick="suggestMusic()">สุ่มเพลง</button>
+</div>
+
+<div class="card">
+  <h3>เกมจับหัวใจ</h3>
+  <p>คะแนน: <span id="score">0</span></p>
+  <button onclick="startGame()">เริ่มเกม</button>
+  <div id="heart" class="hidden">❤️</div>
+</div>
+
+<script>
+const letters = [
+ "คิดถึงเธอทุกวันเลยนะ 💕",
+ "อยู่ด้วยกันแบบนี้ไปนานๆ นะ",
+ "รอยยิ้มเธอคือพลังงานของเรา"
+];
+
+const songs = [
+ "รักคุณเข้าแล้ว - BOYdPOD",
+ "แค่คุณ - Musketeers",
+ "คู่ชีวิต - COCKTAIL"
+];
+
+function newLetter(){
+  document.getElementById("letter").innerText =
+    letters[Math.floor(Math.random()*letters.length)];
+}
+
+function suggestMusic(){
+  document.getElementById("music").innerText =
+    songs[Math.floor(Math.random()*songs.length)];
+}
+
+let score = 0;
+let gameInterval;
+
+function startGame(){
+  score = 0;
+  document.getElementById("score").innerText = score;
+  const heart = document.getElementById("heart");
+  heart.classList.remove("hidden");
+
+  moveHeart();
+}
+
+function moveHeart(){
+  const heart = document.getElementById("heart");
+  heart.style.left = Math.random()*80 + "%";
+  heart.style.top = Math.random()*60 + "%";
+}
+
+document.getElementById("heart").onclick = function(){
+  score++;
+  document.getElementById("score").innerText = score;
+  moveHeart();
+};
+</script>
+
+</body>
+</html>
